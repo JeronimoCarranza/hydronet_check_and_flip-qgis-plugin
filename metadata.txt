@@ -1,0 +1,41 @@
+# This file contains metadata for your plugin. Since 
+# version 2.0 of QGIS this is the proper way to supply 
+# information about a plugin. The old method of 
+# embedding metadata in __init__.py will 
+# is no longer supported since version 2.0.
+
+# This file should be included when you package your plugin.
+
+# Mandatory items:
+
+[general]
+name=Hydronet Check & Flip
+qgisMinimumVersion=3.0
+description=Checks the hydro-network from the outfall & flip the arcs if necessary
+version=1.0
+author=Jeronimo Carranza / asterionat.com
+email=jeronimo.carranza@asterionat.com
+
+about=EN: Checks the hydro-network from the outfall & flip the arcs if necessary. ES: Chequea un conjunto de árboles que representan redes hidrográficas desde sus desembocaduras, y voltea los arcos, allí donde es necesario, para orientarlos en sentido hidrológico.
+
+tracker=http://bugs
+repository=http://repo
+# End of mandatory metadata
+
+# Recommended items:
+
+# Uncomment the following line and add your changelog:
+# changelog=
+
+# Tags are comma separated with spaces allowed
+tags=python, hydrography, network
+
+homepage=http://homepage
+category=Plugins
+icon=icon.png
+# experimental flag
+experimental=True
+
+# deprecated flag (applies to the whole plugin, not just a single version)
+deprecated=False
+

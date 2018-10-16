@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/hydronet_check_and_flip" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
