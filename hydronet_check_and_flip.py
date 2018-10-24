@@ -33,6 +33,8 @@ from qgis.core import *
 import qgis.utils
 from qgis.gui import *
 
+# arc_list_to_check = []
+
 class hydronet_check_and_flip(object):
     """QGIS Plugin Implementation."""
 
@@ -186,6 +188,7 @@ class hydronet_check_and_flip(object):
         QMessageBox.information(None, "Hydronet Check and Flip", "You must have selected the outfalls arcs in the active layer.\n\
             Press Ok to start Hydronet Check and Flip")
         """
+        global arc_list_to_check
 
         layer = qgis.utils.iface.mapCanvas().currentLayer()
 
@@ -203,7 +206,7 @@ class hydronet_check_and_flip(object):
 
         """ Save the outfalls """
         outfalls = layer.selectedFeatures()
-        QgsMessageLog.logMessage('Outfalls: '+str(len(outfalls)),'Hydronet Check and Flip', Qgis.Info)
+        QgsMessageLog.logMessage('Outfalls: '+str(outfalls),'Hydronet Check and Flip', Qgis.Info)
 
         """ Index the layer """
         # layer.dataProvider().createSpatialIndex()
@@ -218,8 +221,17 @@ class hydronet_check_and_flip(object):
                 layer.updateFeature( f )        
             layer.commitChanges()
 
-        """Reselect outfalls """
-        # layer.setSelectedFeatures([k.id() for k in outfalls])
+        """Add the HYN fields to the layer """
+        if (layer.dataProvider().fieldNameIndex('HYNID') == -1): 
+            layer.startEditing()
+            layer.dataProvider().addAttributes(
+                [QgsField( 'HYNID', QVariant.Int)]
+                )
+            layer.updateFields()
+            for f in layer.getFeatures():
+                f['HYNCHECK'] = 0
+                layer.updateFeature( f )        
+            layer.commitChanges()
 
         '''Spatial index '''
         index = QgsSpatialIndex(layer.getFeatures())
@@ -232,6 +244,7 @@ class hydronet_check_and_flip(object):
 
 
     def check(self, arc, index, layer):
+        #global arc_list_to_check
         QgsMessageLog.logMessage('Checking Arc '+str(arc.id()),'Hydronet Check and Flip', Qgis.Info)
         delta = 0.000001
         geom = arc.geometry()
@@ -248,35 +261,40 @@ class hydronet_check_and_flip(object):
         uparcs_idx = index.intersects(upnode_rectangle)
         uparcs_idx.remove(arc.id())
 
-        QgsMessageLog.logMessage('UpArcs Idx: '+str(len(uparcs_idx)),'Hydronet Check and Flip', Qgis.Info)
+        # Add to the list the arcs up to the checking arc
+        #arc_list_to_check.extend(uparcs_idx)
+
+        QgsMessageLog.logMessage('UpArcs Idx: '+str(uparcs_idx),'Hydronet Check and Flip', Qgis.Info)
 
         uparcs = layer.getFeatures(uparcs_idx) 
-        #QgsMessageLog.logMessage('UpArcs '+uparcs,'Hydronet Check and Flip', Qgis.Info)
-
-        # dwarcs = layer.touches(dwnode).remove(arc)
-        # if arc in outfalls:
-        #     """Check if outfall is correct """
-        #     if len(dwarcs) == 0:
-        #         None
-        #     else:
-        #         qgis.utils.iface.messageBar().pushMessage(u"Hydronet Check and Flip ", u"Flipping an outfall", level=Qgis.Warning)
-        #         self.flip(arc, layer)
-        
         for uparc in uparcs:
             if uparc["HYNCHECK"] == 1:
                 self.flip(arc, layer)
                 break
 
+        # Persist item HYNCHECK for the arc checked
         layer.startEditing()
         arc["HYNCHECK"] = 1
         layer.updateFeature( arc )
         layer.commitChanges()
 
-        for uparc in uparcs:
-            QgsMessageLog.logMessage('PreChecking UpArc '+str(uparc.id()),'Hydronet Check and Flip', Qgis.Info)
-            self.check(uparc, index, layer)
+        # Remove from the list the arc checked
+        # if arc.id() in arc_list_to_check:
+        #     arc_list_to_check.remove(arc.id())
+        # QgsMessageLog.logMessage('PostChecking ArcList '+str(arc_list_to_check),'Hydronet Check and Flip', Qgis.Info)
 
-        QgsMessageLog.logMessage('PostChecking Arc '+str(arc.id()),'Hydronet Check and Flip', Qgis.Info)
+        # Recursive check over the next element in the list
+        # for idx in arc_list_to_check:
+        #     idx_list = []
+        #     idx_list.append(idx)
+        #     arc_idx = layer.getFeatures(idx_list)
+        #     for f in arc_idx:
+        #         QgsMessageLog.logMessage('PostChecking Arc '+str(f.id()),'Hydronet Check and Flip', Qgis.Info)
+        #         #self.check(f, index, layer)
+
+        for uparc in uparcs:
+            self.check(uparc, index, layer) 
+
         return
 
     def flip(self, arc, layer):
