@@ -3,12 +3,12 @@
 /***************************************************************************
  hydronet_check_and_flip
  A QGIS plugin
- Checks the hydro-network from the outfall & flip the arcs if necessary
+ Checks the hydro-network from the outfall and flip the arcs if necessary
                              -------------------
-        begin                : 2018-09-18
-        copyright            : (C) 2018 by Jeronimo Carranza / asterionat.com
-        email                : jeronimo.carranza@asterionat.com
-        git sha              : $Format:%H$
+        begin               : 2018-09-18
+        copyright           : (C) 2018 by Jeronimo Carranza / asterionat.com
+        email               : jeronimo.carranza@asterionat.com
+
  ***************************************************************************/
 
 /***************************************************************************

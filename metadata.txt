@@ -16,10 +16,11 @@ version=1.0
 author=Jeronimo Carranza / asterionat.com
 email=jeronimo.carranza@asterionat.com
 
-about=EN: Checks the hydro-network from the outfall & flip the arcs if necessary. ES: Chequea un conjunto de árboles que representan redes hidrográficas desde sus desembocaduras, y voltea los arcos, allí donde es necesario, para orientarlos en sentido hidrológico.
+about=EN: Checks the hydro-network from the outfall and flip the arcs if necessary. ES: Chequea un conjunto de árboles que representan redes hidrográficas desde sus desembocaduras, y voltea los arcos, allí donde es necesario, para orientarlos en sentido hidrológico.
 
-tracker=http://bugs
-repository=http://repo
+tracker=https://github.com/JeronimoCarranza/hydronet_check_and_flip/issues
+repository=https://github.com/JeronimoCarranza/hydronet_check_and_flip
+
 # End of mandatory metadata
 
 # Recommended items:
@@ -28,11 +29,12 @@ repository=http://repo
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=python, hydrography, network
+tags=hydrography, hydrographic network, automatic orientation, outfall
 
-homepage=http://homepage
+homepage=https://github.com/JeronimoCarranza/hydronet_check_and_flip
 category=Plugins
 icon=icon.png
+
 # experimental flag
 experimental=True
 
