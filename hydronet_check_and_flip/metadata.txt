@@ -11,12 +11,12 @@
 [general]
 name=Hydronet Check & Flip
 qgisMinimumVersion=3.0
-description=Checks the hydro-network from the outfall & flip the arcs if necessary
+description=Checks the hydro-network from the outfall and flip the arcs if necessary
 version=1.0
 author=Jeronimo Carranza / asterionat.com
 email=jeronimo.carranza@asterionat.com
 
-about=EN: Checks the hydro-network from the outfall and flip the arcs if necessary. ES: Chequea un conjunto de árboles que representan redes hidrográficas desde sus desembocaduras, y voltea los arcos, allí donde es necesario, para orientarlos en sentido hidrológico.
+about=Checks a set of trees that represent hydrographic networks from their outfalls, flipping the arcs, where necessary, to orient them in a hydrological sense.
 
 tracker=https://github.com/JeronimoCarranza/hydronet_check_and_flip/issues
 repository=https://github.com/JeronimoCarranza/hydronet_check_and_flip
