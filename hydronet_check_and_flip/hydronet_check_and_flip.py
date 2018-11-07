@@ -37,7 +37,7 @@ from qgis.gui import *
 # Global lists
 checked = []
 tocheck = []
-fliped = []
+flipped = []
 
 
 class hydronet_check_and_flip(object):
@@ -69,13 +69,9 @@ class hydronet_check_and_flip(object):
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
 
-        # Create the dialog (after translation) and keep reference
-        # self.dlg = hydronet_check_and_flipDialog()
-
         # Declare instance attributes
         self.actions = []
         self.menu = self.tr(u'&Hydronet Check & Flip')
-        # TODO: We are going to let the user set this up in a future iteration
         self.toolbar = self.iface.addToolBar(u'hydronet_check_and_flip')
         self.toolbar.setObjectName(u'hydronet_check_and_flip')
 
@@ -174,7 +170,7 @@ class hydronet_check_and_flip(object):
         icon_path = ':/plugins/hydronet_check_and_flip/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'Hydronet Check and Flip.\nYou must have selected the outfalls arcs in the active layer. '),
+            text=self.tr(u'Hydronet Check and Flip.\nSelect prior the outfall arcs in the active layer.'),
             callback=self.run,
             parent=self.iface.mainWindow())
 
@@ -207,14 +203,13 @@ class hydronet_check_and_flip(object):
 
         """ Outfalls """
         outfalls = layer.selectedFeatures()
-        QgsMessageLog.logMessage('Outfalls: '+str(outfalls)[1:-1],'Hydronet Check and Flip', Qgis.Info)
 
         """ Spatial index """
         index = QgsSpatialIndex(layer.getFeatures())
 
         global tocheck
         global checked
-        global fliped
+        global flipped
 
         """ Checking for each outfall """
         for feature in outfalls:
@@ -231,28 +226,24 @@ class hydronet_check_and_flip(object):
             n = n + 1
 
         """ Finishing """
-        QgsMessageLog.logMessage('Fliped Arcs:: '+str(fliped)[1:-1],'Hydronet Check and Flip', Qgis.Info)
         QgsMessageLog.logMessage('Checked Arcs:: '+str(checked)[1:-1],'Hydronet Check and Flip', Qgis.Info)
-        #layer.commitChanges()
-        #layer.removeSelection()
-        #qgis.utils.iface.mainWindow().findChild(QAction, 'mActionToggleEditing').trigger() 
+        QgsMessageLog.logMessage('Flipped Arcs:: '+str(flipped)[1:-1],'Hydronet Check and Flip', Qgis.Info)
         qgis.utils.iface.mapCanvas().refresh()
         tocheck = []
         checked = []
-        fliped = []
+        flipped = []
 
 
     def checkarc(self, arc, index, layer):
         global tocheck
         global checked
-        global fliped
+        global flipped
         uparcs_idx = self.arclist(arc, index, layer, 0)
         dwarcs_idx = self.arclist(arc, index, layer, -1)
-        # QgsMessageLog.logMessage('Checking Arc: '+str(arc.id())+' Up: '+str(uparcs_idx)[1:-1]+' Dw: '+str(dwarcs_idx)[1:-1],'Hydronet Check and Flip', Qgis.Info)
         if (self.anyin(uparcs_idx, checked)):
             self.flip(arc, layer)
             tocheck.extend(dwarcs_idx)
-            fliped.append(arc.id())
+            flipped.append(arc.id())
         else:
             tocheck.extend(uparcs_idx)
 
@@ -273,9 +264,8 @@ class hydronet_check_and_flip(object):
 
 
     def flip(self, arc, layer):
-        QgsMessageLog.logMessage('Fliping Arc : '+str(arc.id()),'Hydronet Check and Flip', Qgis.Info)
         layer.startEditing()
-        layer.beginEditCommand( "Fliping" )
+        layer.beginEditCommand( "Flipping" )
         geom = arc.geometry()
         if geom.isMultipart():
             multi = QgsMultiLineString()

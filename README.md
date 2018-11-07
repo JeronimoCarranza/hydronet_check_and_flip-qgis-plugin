@@ -1,4 +1,4 @@
-# HydroNet Check and Flip Plugin
+# Hydronet Check and Flip Plugin
 
 hydronet_check_and_flip-qgis-plugin is a QGIS[http://www.qgis.org/] plugin.
 
