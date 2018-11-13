@@ -6,7 +6,7 @@
  Checks the hydro-network from the outfall and flip the arcs if necessary
                               -------------------
         begin               : 2018-09-18
-        copyright           : (C) 2018 by Jeronimo Carranza / asterionat.com
+        copyright           : (C) 2018 by Jeronimo Carranza - asterionat.com
         email               : jeronimo.carranza@asterionat.com
 
  ***************************************************************************/
